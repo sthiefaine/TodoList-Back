@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 // ROUTES
 app.get('/tasks', db.getTasks)
 app.post('/task', db.createTask)
+app.put('/task/:id', db.updateTask)
 app.delete('/task/:id', db.deleteTask)
 
 // Start server

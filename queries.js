@@ -3,7 +3,7 @@ const {
 } = require('./config')
 
 const getTasks = (request, response) => {
-    pool.query('SELECT * FROM tasks', (error, results) => {
+    pool.query('SELECT * FROM tasks ORDER BY id', (error, results) => {
         if (error) {
             throw error
         }
@@ -28,6 +28,26 @@ const createTask = (request, response) => {
     )
 }
 
+const updateTask = (request, response) => {
+    const id = parseInt(request.params.id);
+
+    const {done} = request.body.data
+
+    pool.query(
+        'UPDATE tasks SET done = $1 WHERE id = ($2) RETURNING *',
+        [done, id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            console.table(results.rows)
+            response.status(201).json(...results.rows)
+        },
+    )
+}
+
+
+
 const deleteTask = (request, response) => {
     const id = parseInt(request.params.id);
 
@@ -48,4 +68,5 @@ module.exports = {
     getTasks,
     createTask,
     deleteTask,
+    updateTask,
 }
