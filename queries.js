@@ -14,41 +14,32 @@ const getTasks = (request, response) => {
 const createTask = (request, response) => {
     const {
         label
-    } = request.body
+    } = request.body.data
 
     pool.query(
-        'INSERT INTO task (label) VALUES ($1)',
+        'INSERT INTO tasks (label) VALUES ($1) RETURNING *',
         [label],
         (error, results) => {
             if (error) {
                 throw error
             }
-            response.status(201).json({
-                status: 'success',
-                message: 'Task added.',
-                rr: `${results.insertId}`,
-            })
+            response.status(201).json(...results.rows)
         },
     )
 }
 
 const deleteTask = (request, response) => {
-    const {
-        id
-    } = parseInt(request.body)
+    const id = parseInt(request.params.id);
 
     pool.query(
-        'DELETE FROM task WHERE id = ($1)',
+        'DELETE FROM tasks WHERE id = ($1) RETURNING *',
         [id],
         (error, results) => {
             if (error) {
                 throw error
             }
-            response.status(201).json({
-                status: 'success',
-                message: 'Task deleted',
-                rr: `${results}`,
-            })
+            console.table(results.rows)
+            response.status(201).json(...results.rows)
         },
     )
 }

@@ -5,7 +5,7 @@
   "description": "Tasks API",
   "main": "index.js",
   "engines": {
-    "node": "11.x"
+    "node": "*"
   },
   "scripts": {
     "start": "node index.js",
@@ -19,6 +19,6 @@
     "pg": "^8.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "*"
   }
 }
